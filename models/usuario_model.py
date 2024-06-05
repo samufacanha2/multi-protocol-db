@@ -11,6 +11,10 @@ def ler_usuario(id):
     return usuarios.find_one({"ID": id})
 
 
+def ler_usuarios():
+    return list(usuarios.find({}))
+
+
 def atualizar_usuario(id, novos_valores):
     usuarios.update_one({"ID": id}, {"$set": novos_valores})
 

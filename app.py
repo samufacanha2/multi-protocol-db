@@ -1,18 +1,27 @@
-from models import usuario_model, playlist_model, musica_model
+from apis import rest, soap
+
+# Start the REST API server
+from multiprocessing import Process
 
 
-# Exemplos de uso das views
-novo_usuario = {"ID": 2, "nome": "User2", "idade": 30, "playlists": []}
-usuario_model.criar_usuario(novo_usuario)
+def start_rest():
+    rest.app.run(port=5000)
 
-usuario_model.ler_usuario(1)
 
-usuario_model.atualizar_usuario(1, {"idade": 26})
+def start_soap():
+    from wsgiref.simple_server import make_server
 
-usuario_model.deletar_usuario(2)
+    wsgi_app = soap.WsgiApplication(soap.application)
+    server = make_server("127.0.0.1", 8001, wsgi_app)
+    server.serve_forever()
 
-nova_playlist = {"ID": 1, "nome": "Playlist1", "musicas": [1]}
-playlist_model.criar_playlist(nova_playlist)
 
-nova_musica = {"ID": 1, "nome": "Song1", "artista": "Artist1"}
-musica_model.criar_musica(nova_musica)
+if __name__ == "__main__":
+    rest_process = Process(target=start_rest)
+    soap_process = Process(target=start_soap)
+
+    rest_process.start()
+    soap_process.start()
+
+    rest_process.join()
+    soap_process.join()
