@@ -1,4 +1,4 @@
-# Musica App
+# Acesso à Database Multi-protocolo
 
 Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP, gRPC e GraphQL usando Flask, Spyne, Graphene e gRPC. O projeto também inclui uma configuração do Docker para executar a aplicação junto com um banco de dados MongoDB.
 
@@ -14,7 +14,7 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/musica-app.git
+   git clone https://github.com/samufacanha2/multi-protocol-db
    cd musica-app
    ```
 
