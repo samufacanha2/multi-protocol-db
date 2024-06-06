@@ -1,0 +1,10 @@
+Flask==3.0.3
+Flask-Cors==4.0.0
+Flask-GraphQL==2.0.1
+graphene==2.1.9
+grpcio==1.64.1
+grpcio-tools==1.64.1
+lxml==5.2.2
+pymongo==4.7.3
+spyne==2.14.0
+Werkzeug==3.0.2

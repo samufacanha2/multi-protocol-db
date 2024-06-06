@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package usuario;
+
+service UsuarioService {
+    rpc CriarUsuario (Usuario) returns (Resposta);
+    rpc LerUsuario (UsuarioID) returns (Usuario);
+    rpc AtualizarUsuario (Usuario) returns (Resposta);
+    rpc DeletarUsuario (UsuarioID) returns (Resposta);
+    rpc LerUsuarios (Empty) returns (UsuarioList);
+}
+
+message Usuario {
+    int32 ID = 1;
+    string nome = 2;
+    int32 idade = 3;
+    repeated int32 playlists = 4;
+}
+
+message UsuarioID {
+    int32 ID = 1;
+}
+
+message Resposta {
+    string message = 1;
+}
+
+message Empty {}
+
+message UsuarioList {
+    repeated Usuario usuarios = 1;
+}

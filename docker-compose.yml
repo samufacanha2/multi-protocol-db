@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: musica_app
+    depends_on:
+      - mongo
+    ports:
+      - "5000:5000" # REST API
+      - "5001:8001" # SOAP API
+      - "5002:5002" # GraphQL API
+      - "50051:50051" # gRPC API
+    environment:
+      - FLASK_ENV=development
+    volumes:
+      - ./src:/app
+
+volumes:
+  mongo_data:
