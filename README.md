@@ -6,8 +6,8 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
 
 ### Pré-requisitos
 
-- Docker
-- Docker Compose
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
 ### Passos para Configuração
 
@@ -59,6 +59,25 @@ Exemplo de requisição SOAP para ler um usuário:
 ### API gRPC
 
 Exemplo de cliente gRPC em Python para ler um usuário:
+
+```python
+import grpc
+import usuario_pb2
+import usuario_pb2_grpc
+
+# Conectar ao servidor gRPC
+channel = grpc.insecure_channel('localhost:50051')
+stub = usuario_pb2_grpc.UsuarioServiceStub(channel)
+
+# Ler um usuário
+usuario = stub.LerUsuario(usuario_pb2.UsuarioID(ID=1))
+print(f"ID: {usuario.ID}, Nome: {usuario.nome}, Idade: {usuario.idade}")
+
+```
+
+### API GraphQL
+
+Exemplo de query GraphQL para listar todos os usuários:
 
 ```graphql
 query {
