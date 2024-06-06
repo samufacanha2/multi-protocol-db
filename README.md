@@ -18,22 +18,10 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
    cd musica-app
    ```
 
-2. Gere o arquivo `requirements.txt` com as versões atuais dos pacotes instalados:
+2. Inicie os containers:
 
    ```bash
-   ./generate_requirements.sh
-   ```
-
-3. Construa as imagens Docker:
-
-   ```bash
-   docker-compose build
-   ```
-
-4. Inicie os containers:
-
-   ```bash
-   docker-compose up
+   docker-compose up --build
    ```
 
 ### Acessando os Serviços
