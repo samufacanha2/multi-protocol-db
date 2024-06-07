@@ -1,7 +1,7 @@
 from concurrent import futures
 import grpc
 from protobufs import usuario_pb2, usuario_pb2_grpc
-from models import usuario_model
+from models import usuario_model, musica_model
 
 
 class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
@@ -52,11 +52,44 @@ class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
         )
 
 
+class MusicaService(usuario_pb2_grpc.MusicaServiceServicer):
+    def CriarMusica(self, request, context):
+        musica = {"ID": request.ID, "nome": request.nome, "artista": request.artista}
+        musica_model.criar_musica(musica)
+        return usuario_pb2.Resposta(message="Música criada com sucesso!")
+
+    def LerMusica(self, request, context):
+        musica = musica_model.ler_musica(request.ID)
+        return usuario_pb2.Musica(
+            ID=musica["ID"], nome=musica["nome"], artista=musica["artista"]
+        )
+
+    def AtualizarMusica(self, request, context):
+        novos_valores = {"nome": request.nome, "artista": request.artista}
+        musica_model.atualizar_musica(request.ID, novos_valores)
+        return usuario_pb2.Resposta(message="Música atualizada com sucesso!")
+
+    def DeletarMusica(self, request, context):
+        musica_model.deletar_musica(request.ID)
+        return usuario_pb2.Resposta(message="Música deletada com sucesso!")
+
+    def LerMusicas(self, request, context):
+        musicas = musica_model.ler_musicas()
+        return usuario_pb2.MusicaList(
+            musicas=[
+                usuario_pb2.Musica(
+                    ID=musica["ID"], nome=musica["nome"], artista=musica["artista"]
+                )
+                for musica in musicas
+            ]
+        )
+
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     usuario_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
-    print("Servidor gRPC rodando na porta 50051")
-    server.add_insecure_port("[::]:50051")
+    usuario_pb2_grpc.add_MusicaServiceServicer_to_server(MusicaService(), server)
+    server.add_insecure_port("[::]:5003")
     server.start()
     server.wait_for_termination()
 

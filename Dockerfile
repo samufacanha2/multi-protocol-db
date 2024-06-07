@@ -12,7 +12,7 @@ RUN pip install -r requirements.txt
 COPY src /app
 
 # Exponha as portas necessárias
-EXPOSE 5000 5001 5002 8001 50051
+EXPOSE 5000 5001 5002 5003
 
 # Comando para iniciar a aplicação
 CMD ["python", "app.py"]

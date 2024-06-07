@@ -8,7 +8,9 @@ def criar_usuario(usuario):
 
 
 def ler_usuario(id):
-    return usuarios.find_one({"ID": id})
+    usuario_encontrado = usuarios.find_one({"ID": id})
+    if usuario_encontrado:
+        return usuario_encontrado
 
 
 def ler_usuarios():
@@ -16,8 +18,10 @@ def ler_usuarios():
 
 
 def atualizar_usuario(id, novos_valores):
-    usuarios.update_one({"ID": id}, {"$set": novos_valores})
+    if ler_usuario(id):
+        usuarios.update_one({"ID": id}, {"$set": novos_valores})
 
 
 def deletar_usuario(id):
-    usuarios.delete_one({"ID": id})
+    if ler_usuario(id):
+        usuarios.delete_one({"ID": id})

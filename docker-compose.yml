@@ -18,9 +18,9 @@ services:
       - mongo
     ports:
       - "5000:5000" # REST API
-      - "5001:8001" # SOAP API
+      - "5001:5001" # SOAP API
       - "5002:5002" # GraphQL API
-      - "50051:50051" # gRPC API
+      - "5003:5003" # gRPC API
     environment:
       - FLASK_ENV=development
     volumes:

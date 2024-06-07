@@ -43,31 +43,31 @@ class UsuarioServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CriarUsuario = channel.unary_unary(
-            "/usuario.UsuarioService/CriarUsuario",
+            "/musica_app.UsuarioService/CriarUsuario",
             request_serializer=usuario__pb2.Usuario.SerializeToString,
             response_deserializer=usuario__pb2.Resposta.FromString,
             _registered_method=True,
         )
         self.LerUsuario = channel.unary_unary(
-            "/usuario.UsuarioService/LerUsuario",
+            "/musica_app.UsuarioService/LerUsuario",
             request_serializer=usuario__pb2.UsuarioID.SerializeToString,
             response_deserializer=usuario__pb2.Usuario.FromString,
             _registered_method=True,
         )
         self.AtualizarUsuario = channel.unary_unary(
-            "/usuario.UsuarioService/AtualizarUsuario",
+            "/musica_app.UsuarioService/AtualizarUsuario",
             request_serializer=usuario__pb2.Usuario.SerializeToString,
             response_deserializer=usuario__pb2.Resposta.FromString,
             _registered_method=True,
         )
         self.DeletarUsuario = channel.unary_unary(
-            "/usuario.UsuarioService/DeletarUsuario",
+            "/musica_app.UsuarioService/DeletarUsuario",
             request_serializer=usuario__pb2.UsuarioID.SerializeToString,
             response_deserializer=usuario__pb2.Resposta.FromString,
             _registered_method=True,
         )
         self.LerUsuarios = channel.unary_unary(
-            "/usuario.UsuarioService/LerUsuarios",
+            "/musica_app.UsuarioService/LerUsuarios",
             request_serializer=usuario__pb2.Empty.SerializeToString,
             response_deserializer=usuario__pb2.UsuarioList.FromString,
             _registered_method=True,
@@ -137,10 +137,12 @@ def add_UsuarioServiceServicer_to_server(servicer, server):
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        "usuario.UsuarioService", rpc_method_handlers
+        "musica_app.UsuarioService", rpc_method_handlers
     )
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers("usuario.UsuarioService", rpc_method_handlers)
+    server.add_registered_method_handlers(
+        "musica_app.UsuarioService", rpc_method_handlers
+    )
 
 
 # This class is part of an EXPERIMENTAL API.
@@ -163,7 +165,7 @@ class UsuarioService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/usuario.UsuarioService/CriarUsuario",
+            "/musica_app.UsuarioService/CriarUsuario",
             usuario__pb2.Usuario.SerializeToString,
             usuario__pb2.Resposta.FromString,
             options,
@@ -193,7 +195,7 @@ class UsuarioService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/usuario.UsuarioService/LerUsuario",
+            "/musica_app.UsuarioService/LerUsuario",
             usuario__pb2.UsuarioID.SerializeToString,
             usuario__pb2.Usuario.FromString,
             options,
@@ -223,7 +225,7 @@ class UsuarioService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/usuario.UsuarioService/AtualizarUsuario",
+            "/musica_app.UsuarioService/AtualizarUsuario",
             usuario__pb2.Usuario.SerializeToString,
             usuario__pb2.Resposta.FromString,
             options,
@@ -253,7 +255,7 @@ class UsuarioService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/usuario.UsuarioService/DeletarUsuario",
+            "/musica_app.UsuarioService/DeletarUsuario",
             usuario__pb2.UsuarioID.SerializeToString,
             usuario__pb2.Resposta.FromString,
             options,
@@ -283,9 +285,276 @@ class UsuarioService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            "/usuario.UsuarioService/LerUsuarios",
+            "/musica_app.UsuarioService/LerUsuarios",
             usuario__pb2.Empty.SerializeToString,
             usuario__pb2.UsuarioList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+
+class MusicaServiceStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.CriarMusica = channel.unary_unary(
+            "/musica_app.MusicaService/CriarMusica",
+            request_serializer=usuario__pb2.Musica.SerializeToString,
+            response_deserializer=usuario__pb2.Resposta.FromString,
+            _registered_method=True,
+        )
+        self.LerMusica = channel.unary_unary(
+            "/musica_app.MusicaService/LerMusica",
+            request_serializer=usuario__pb2.MusicaID.SerializeToString,
+            response_deserializer=usuario__pb2.Musica.FromString,
+            _registered_method=True,
+        )
+        self.AtualizarMusica = channel.unary_unary(
+            "/musica_app.MusicaService/AtualizarMusica",
+            request_serializer=usuario__pb2.Musica.SerializeToString,
+            response_deserializer=usuario__pb2.Resposta.FromString,
+            _registered_method=True,
+        )
+        self.DeletarMusica = channel.unary_unary(
+            "/musica_app.MusicaService/DeletarMusica",
+            request_serializer=usuario__pb2.MusicaID.SerializeToString,
+            response_deserializer=usuario__pb2.Resposta.FromString,
+            _registered_method=True,
+        )
+        self.LerMusicas = channel.unary_unary(
+            "/musica_app.MusicaService/LerMusicas",
+            request_serializer=usuario__pb2.Empty.SerializeToString,
+            response_deserializer=usuario__pb2.MusicaList.FromString,
+            _registered_method=True,
+        )
+
+
+class MusicaServiceServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def CriarMusica(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def LerMusica(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def AtualizarMusica(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeletarMusica(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def LerMusicas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+
+def add_MusicaServiceServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+        "CriarMusica": grpc.unary_unary_rpc_method_handler(
+            servicer.CriarMusica,
+            request_deserializer=usuario__pb2.Musica.FromString,
+            response_serializer=usuario__pb2.Resposta.SerializeToString,
+        ),
+        "LerMusica": grpc.unary_unary_rpc_method_handler(
+            servicer.LerMusica,
+            request_deserializer=usuario__pb2.MusicaID.FromString,
+            response_serializer=usuario__pb2.Musica.SerializeToString,
+        ),
+        "AtualizarMusica": grpc.unary_unary_rpc_method_handler(
+            servicer.AtualizarMusica,
+            request_deserializer=usuario__pb2.Musica.FromString,
+            response_serializer=usuario__pb2.Resposta.SerializeToString,
+        ),
+        "DeletarMusica": grpc.unary_unary_rpc_method_handler(
+            servicer.DeletarMusica,
+            request_deserializer=usuario__pb2.MusicaID.FromString,
+            response_serializer=usuario__pb2.Resposta.SerializeToString,
+        ),
+        "LerMusicas": grpc.unary_unary_rpc_method_handler(
+            servicer.LerMusicas,
+            request_deserializer=usuario__pb2.Empty.FromString,
+            response_serializer=usuario__pb2.MusicaList.SerializeToString,
+        ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+        "musica_app.MusicaService", rpc_method_handlers
+    )
+    server.add_generic_rpc_handlers((generic_handler,))
+    server.add_registered_method_handlers(
+        "musica_app.MusicaService", rpc_method_handlers
+    )
+
+
+# This class is part of an EXPERIMENTAL API.
+class MusicaService(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def CriarMusica(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.MusicaService/CriarMusica",
+            usuario__pb2.Musica.SerializeToString,
+            usuario__pb2.Resposta.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def LerMusica(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.MusicaService/LerMusica",
+            usuario__pb2.MusicaID.SerializeToString,
+            usuario__pb2.Musica.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def AtualizarMusica(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.MusicaService/AtualizarMusica",
+            usuario__pb2.Musica.SerializeToString,
+            usuario__pb2.Resposta.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def DeletarMusica(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.MusicaService/DeletarMusica",
+            usuario__pb2.MusicaID.SerializeToString,
+            usuario__pb2.Resposta.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def LerMusicas(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.MusicaService/LerMusicas",
+            usuario__pb2.Empty.SerializeToString,
+            usuario__pb2.MusicaList.FromString,
             options,
             channel_credentials,
             insecure,

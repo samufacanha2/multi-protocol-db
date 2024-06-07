@@ -15,7 +15,7 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
 
    ```bash
    git clone https://github.com/samufacanha2/multi-protocol-db
-   cd musica-app
+   cd multi-protocol-db
    ```
 
 2. Inicie os containers:
@@ -29,7 +29,7 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
 - **API REST**: `http://localhost:5000`
 - **API SOAP**: `http://localhost:5001`
 - **API GraphQL**: `http://localhost:5002/graphql`
-- **API gRPC**: Conecte-se à porta `50051`
+- **API gRPC**: Conecte-se à porta `5003`
 
 ## Endpoints
 
@@ -66,7 +66,7 @@ import usuario_pb2
 import usuario_pb2_grpc
 
 # Conectar ao servidor gRPC
-channel = grpc.insecure_channel('localhost:50051')
+channel = grpc.insecure_channel('localhost:5003')
 stub = usuario_pb2_grpc.UsuarioServiceStub(channel)
 
 # Ler um usuário

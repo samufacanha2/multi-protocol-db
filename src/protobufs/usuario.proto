@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package usuario;
+package musica_app;
 
 service UsuarioService {
     rpc CriarUsuario (Usuario) returns (Resposta);
@@ -10,6 +10,14 @@ service UsuarioService {
     rpc LerUsuarios (Empty) returns (UsuarioList);
 }
 
+service MusicaService {
+    rpc CriarMusica (Musica) returns (Resposta);
+    rpc LerMusica (MusicaID) returns (Musica);
+    rpc AtualizarMusica (Musica) returns (Resposta);
+    rpc DeletarMusica (MusicaID) returns (Resposta);
+    rpc LerMusicas (Empty) returns (MusicaList);
+}
+
 message Usuario {
     int32 ID = 1;
     string nome = 2;
@@ -17,7 +25,17 @@ message Usuario {
     repeated int32 playlists = 4;
 }
 
+message Musica {
+    int32 ID = 1;
+    string nome = 2;
+    string artista = 3;
+}
+
 message UsuarioID {
+    int32 ID = 1;
+}
+
+message MusicaID {
     int32 ID = 1;
 }
 
@@ -29,4 +47,8 @@ message Empty {}
 
 message UsuarioList {
     repeated Usuario usuarios = 1;
+}
+
+message MusicaList {
+    repeated Musica musicas = 1;
 }
