@@ -1,10 +1,10 @@
 from concurrent import futures
 import grpc
-from protobufs import usuario_pb2, usuario_pb2_grpc
-from models import usuario_model, musica_model
+from protobufs import dtos_pb2, dtos_pb2_grpc
+from models import usuario_model, musica_model, playlist_model
 
 
-class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
+class UsuarioService(dtos_pb2_grpc.UsuarioServiceServicer):
     def CriarUsuario(self, request, context):
         usuario = {
             "ID": request.ID,
@@ -13,11 +13,11 @@ class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
             "playlists": request.playlists,
         }
         usuario_model.criar_usuario(usuario)
-        return usuario_pb2.Resposta(message="Usuário criado com sucesso!")
+        return dtos_pb2.Resposta(message="Usuário criado com sucesso!")
 
     def LerUsuario(self, request, context):
         usuario = usuario_model.ler_usuario(request.ID)
-        return usuario_pb2.Usuario(
+        return dtos_pb2.Usuario(
             ID=usuario["ID"],
             nome=usuario["nome"],
             idade=usuario["idade"],
@@ -31,17 +31,17 @@ class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
             "playlists": request.playlists,
         }
         usuario_model.atualizar_usuario(request.ID, novos_valores)
-        return usuario_pb2.Resposta(message="Usuário atualizado com sucesso!")
+        return dtos_pb2.Resposta(message="Usuário atualizado com sucesso!")
 
     def DeletarUsuario(self, request, context):
         usuario_model.deletar_usuario(request.ID)
-        return usuario_pb2.Resposta(message="Usuário deletado com sucesso!")
+        return dtos_pb2.Resposta(message="Usuário deletado com sucesso!")
 
     def LerUsuarios(self, request, context):
         usuarios = usuario_model.ler_usuarios()
-        return usuario_pb2.UsuarioList(
+        return dtos_pb2.UsuarioList(
             usuarios=[
-                usuario_pb2.Usuario(
+                dtos_pb2.Usuario(
                     ID=usuario["ID"],
                     nome=usuario["nome"],
                     idade=usuario["idade"],
@@ -52,32 +52,32 @@ class UsuarioService(usuario_pb2_grpc.UsuarioServiceServicer):
         )
 
 
-class MusicaService(usuario_pb2_grpc.MusicaServiceServicer):
+class MusicaService(dtos_pb2_grpc.MusicaServiceServicer):
     def CriarMusica(self, request, context):
         musica = {"ID": request.ID, "nome": request.nome, "artista": request.artista}
         musica_model.criar_musica(musica)
-        return usuario_pb2.Resposta(message="Música criada com sucesso!")
+        return dtos_pb2.Resposta(message="Música criada com sucesso!")
 
     def LerMusica(self, request, context):
         musica = musica_model.ler_musica(request.ID)
-        return usuario_pb2.Musica(
+        return dtos_pb2.Musica(
             ID=musica["ID"], nome=musica["nome"], artista=musica["artista"]
         )
 
     def AtualizarMusica(self, request, context):
         novos_valores = {"nome": request.nome, "artista": request.artista}
         musica_model.atualizar_musica(request.ID, novos_valores)
-        return usuario_pb2.Resposta(message="Música atualizada com sucesso!")
+        return dtos_pb2.Resposta(message="Música atualizada com sucesso!")
 
     def DeletarMusica(self, request, context):
         musica_model.deletar_musica(request.ID)
-        return usuario_pb2.Resposta(message="Música deletada com sucesso!")
+        return dtos_pb2.Resposta(message="Música deletada com sucesso!")
 
     def LerMusicas(self, request, context):
         musicas = musica_model.ler_musicas()
-        return usuario_pb2.MusicaList(
+        return dtos_pb2.MusicaList(
             musicas=[
-                usuario_pb2.Musica(
+                dtos_pb2.Musica(
                     ID=musica["ID"], nome=musica["nome"], artista=musica["artista"]
                 )
                 for musica in musicas
@@ -85,10 +85,61 @@ class MusicaService(usuario_pb2_grpc.MusicaServiceServicer):
         )
 
 
+class PlaylistService(dtos_pb2_grpc.PlaylistServiceServicer):
+    def CriarPlaylist(self, request, context):
+        playlist = {
+            "ID": request.ID,
+            "usuario_id": request.usuario_id,
+            "musicas": list(request.musicas),
+        }
+        playlist_model.criar_playlist(playlist)
+        usuario_model.adicionar_playlist(request.usuario_id, request.ID)
+        return dtos_pb2.Resposta(message="Playlist criada com sucesso!")
+
+    def ListarPlaylistsPorUsuario(self, request, context):
+        playlists = playlist_model.listar_playlists_usuario(request.ID)
+        return dtos_pb2.PlaylistList(
+            playlists=[
+                dtos_pb2.Playlist(
+                    ID=playlist["ID"],
+                    usuario_id=playlist["usuario_id"],
+                    musicas=playlist["musicas"],
+                )
+                for playlist in playlists
+            ]
+        )
+
+    def ListarMusicasPorPlaylist(self, request, context):
+        musicas = playlist_model.listar_musicas_playlist(request.ID)
+        return dtos_pb2.MusicaList(
+            musicas=[
+                dtos_pb2.Musica(
+                    ID=musica["ID"], nome=musica["nome"], artista=musica["artista"]
+                )
+                for musica in musicas
+            ]
+        )
+
+    def ListarPlaylistsPorMusica(self, request, context):
+        playlists = playlist_model.listar_playlists_por_musica(request.ID)
+        return dtos_pb2.PlaylistList(
+            playlists=[
+                dtos_pb2.Playlist(
+                    ID=playlist["ID"],
+                    usuario_id=playlist["usuario_id"],
+                    musicas=playlist["musicas"],
+                )
+                for playlist in playlists
+            ]
+        )
+
+
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    usuario_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
-    usuario_pb2_grpc.add_MusicaServiceServicer_to_server(MusicaService(), server)
+    dtos_pb2_grpc.add_UsuarioServiceServicer_to_server(UsuarioService(), server)
+    dtos_pb2_grpc.add_MusicaServiceServicer_to_server(MusicaService(), server)
+    dtos_pb2_grpc.add_PlaylistServiceServicer_to_server(PlaylistService(), server)
+
     server.add_insecure_port("[::]:5003")
     server.start()
     server.wait_for_termination()

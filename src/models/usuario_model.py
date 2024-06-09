@@ -25,3 +25,7 @@ def atualizar_usuario(id, novos_valores):
 def deletar_usuario(id):
     if ler_usuario(id):
         usuarios.delete_one({"ID": id})
+
+
+def adicionar_playlist(usuario_id, playlist_id):
+    usuarios.update_one({"ID": usuario_id}, {"$push": {"playlists": playlist_id}})

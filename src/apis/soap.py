@@ -1,7 +1,7 @@
 from spyne import Application, rpc, ServiceBase, Integer, Unicode, Iterable
 from spyne.protocol.soap import Soap11
 from spyne.server.wsgi import WsgiApplication
-from models import usuario_model, musica_model
+from models import usuario_model, musica_model, playlist_model
 
 
 class UsuarioService(ServiceBase):
@@ -80,8 +80,67 @@ class MusicaService(ServiceBase):
         ]
 
 
+class PlaylistService(ServiceBase):
+    @rpc(Integer, Unicode, Iterable(Integer), Integer, _returns=Unicode)
+    def criar_playlist(ctx, ID, nome, musicas, usuario_id):
+        playlist = {
+            "ID": ID,
+            "nome": nome,
+            "musicas": musicas,
+            "usuario_id": usuario_id,
+        }
+        playlist_model.criar_playlist(playlist)
+        return "Playlist criada com sucesso!"
+
+    @rpc(Integer, _returns=Iterable(Unicode))
+    def ler_playlist(ctx, ID):
+        playlist = playlist_model.ler_playlist(ID)
+        if not playlist:
+            return ["Playlist não encontrada!"]
+        return [
+            f"ID: {playlist['ID']}",
+            f"Nome: {playlist['nome']}",
+            f"Músicas: {playlist['musicas']}",
+            f"Usuário ID: {playlist['usuario_id']}",
+        ]
+
+    @rpc(Integer, Unicode, Iterable(Integer), Integer, _returns=Unicode)
+    def atualizar_playlist(ctx, ID, nome, musicas, usuario_id):
+        novos_valores = {"nome": nome, "musicas": musicas, "usuario_id": usuario_id}
+        playlist_model.atualizar_playlist(ID, novos_valores)
+        return "Playlist atualizada com sucesso!"
+
+    @rpc(Integer, _returns=Unicode)
+    def deletar_playlist(ctx, ID):
+        playlist_model.deletar_playlist(ID)
+        return "Playlist deletada com sucesso!"
+
+    @rpc(Integer, _returns=Iterable(Unicode))
+    def listar_playlists_usuario(ctx, usuario_id):
+        playlists = playlist_model.listar_playlists_usuario(usuario_id)
+        if len(playlists) == 0:
+            return ["Nenhuma playlist encontrada!"]
+        return [
+            f"ID: {playlist['ID']}, Nome: {playlist['nome']}, Músicas: {playlist['musicas']}, Usuário ID: {playlist['usuario_id']}"
+            for playlist in playlists
+        ]
+
+    @rpc(Integer, _returns=Iterable(Unicode))
+    def listar_musicas_playlist(ctx, playlist_id):
+        musicas = playlist_model.listar_musicas_playlist(playlist_id)
+        return [f"ID: {musica}" for musica in musicas]
+
+    @rpc(Integer, _returns=Iterable(Unicode))
+    def listar_playlists_por_musica(ctx, musica_id):
+        playlists = playlist_model.listar_playlists_por_musica(musica_id)
+        return [
+            f"ID: {playlist['ID']}, Nome: {playlist['nome']}, Músicas: {playlist['musicas']}, Usuário ID: {playlist['usuario_id']}"
+            for playlist in playlists
+        ]
+
+
 application = Application(
-    [UsuarioService, MusicaService],
+    [UsuarioService, MusicaService, PlaylistService],
     "spyne.examples.flask",
     in_protocol=Soap11(validator="lxml"),
     out_protocol=Soap11(),

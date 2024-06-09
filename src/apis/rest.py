@@ -78,5 +78,55 @@ def deletar_musica(id):
     return parse_json({"message": "Música deletada com sucesso!"}), 200
 
 
+@app.route("/playlists", methods=["POST"])
+def criar_playlist():
+    playlist = request.json
+    playlist_model.criar_playlist(playlist)
+    return parse_json({"message": "Playlist criada com sucesso!"}), 201
+
+
+@app.route("/playlists", methods=["GET"])
+def ler_playlists():
+    playlists = playlist_model.ler_playlists()
+    return parse_json(playlists), 200
+
+
+@app.route("/playlists/<int:id>", methods=["GET"])
+def ler_playlist(id):
+    playlist = playlist_model.ler_playlist(id)
+    return parse_json(playlist), 200
+
+
+@app.route("/playlists/<int:id>", methods=["PUT"])
+def atualizar_playlist(id):
+    novos_valores = request.json
+    playlist_model.atualizar_playlist(id, novos_valores)
+    return parse_json({"message": "Playlist atualizada com sucesso!"}), 200
+
+
+@app.route("/playlists/<int:id>", methods=["DELETE"])
+def deletar_playlist(id):
+    playlist_model.deletar_playlist(id)
+    return parse_json({"message": "Playlist deletada com sucesso!"}), 200
+
+
+@app.route("/usuarios/<int:usuario_id>/playlists", methods=["GET"])
+def listar_playlists_usuario(usuario_id):
+    playlists = playlist_model.listar_playlists_usuario(usuario_id)
+    return parse_json(playlists), 200
+
+
+@app.route("/playlists/<int:playlist_id>/musicas", methods=["GET"])
+def listar_musicas_playlist(playlist_id):
+    musicas = playlist_model.listar_musicas_playlist(playlist_id)
+    return parse_json(musicas), 200
+
+
+@app.route("/musicas/<int:musica_id>/playlists", methods=["GET"])
+def listar_playlists_por_musica(musica_id):
+    playlists = playlist_model.listar_playlists_por_musica(musica_id)
+    return parse_json(playlists), 200
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")

@@ -51,6 +51,17 @@ Este é um projeto de exemplo que demonstra a implementação de APIs REST, SOAP
 - **Atualizar Música**: `PUT /musicas/<id>`
 - **Deletar Música**: `DELETE /musicas/<id>`
 
+#### Playlist
+
+- **Criar Playlist**: `POST /playlists`
+- **Ler Playlists**: `GET /playlists`
+- **Ler Playlist**: `GET /playlists/<id>`
+- **Atualizar Playlist**: `PUT /playlists/<id>`
+- **Deletar Playlist**: `DELETE /playlists/<id>`
+- **Listar Playlists de um Usuário**: `GET /usuarios/<usuario_id>/playlists`
+- **Listar Músicas de uma Playlist**: `GET /playlists/<playlist_id>/musicas`
+- **Listar Playlists por Música**: `GET /musicas/<musica_id>/playlists`
+
 ### API SOAP
 
 Exemplo de requisição SOAP para ler um usuário:
@@ -75,6 +86,19 @@ Exemplo de requisição SOAP para ler uma música:
       <spy:ler_musica>
          <spy:ID>1</spy:ID>
       </spy:ler_musica>
+   </soapenv:Body>
+</soapenv:Envelope>
+```
+
+Exemplo de requisição SOAP para listar as playlists de um usuário:
+
+```xml
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:spy="spyne.examples.flask">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <spy:listar_playlists_usuario>
+         <spy:usuario_id>1</spy:usuario_id>
+      </spy:listar_playlists_usuario>
    </soapenv:Body>
 </soapenv:Envelope>
 ```
@@ -111,6 +135,23 @@ stub = usuario_pb2_grpc.MusicaServiceStub(channel)
 # Ler uma música
 musica = stub.LerMusica(usuario_pb2.MusicaID(ID=1))
 print(f"ID: {musica.ID}, Nome: {musica.nome}, Artista: {musica.artista}")
+```
+
+Exemplo de cliente gRPC em Python para listar playlists de um usuário:
+
+```python
+import grpc
+import usuario_pb2
+import usuario_pb2_grpc
+
+# Conectar ao servidor gRPC
+channel = grpc.insecure_channel('localhost:5003')
+stub = usuario_pb2_grpc.PlaylistServiceStub(channel)
+
+# Listar playlists de um usuário
+playlists = stub.ListarPlaylistsUsuario(usuario_pb2.UsuarioID(ID=1))
+for playlist in playlists.playlists:
+    print(f"ID: {playlist.ID}, Nome: {playlist.nome}, Músicas: {playlist.musicas}, Usuário ID: {playlist.usuario_id}")
 ```
 
 ### API GraphQL
@@ -155,6 +196,50 @@ Exemplo de mutation GraphQL para criar uma nova música:
 ```graphql
 mutation {
   create_musica(ID: 2, nome: "Musica2", artista: "Artista2") {
+    message
+  }
+}
+```
+
+Exemplo de query GraphQL para listar todas as playlists de um usuário:
+
+```graphql
+query {
+  playlists_usuario(usuario_id: 1) {
+    ID
+    nome
+    musicas
+    usuario_id
+  }
+}
+```
+
+Exemplo de query GraphQL para listar todas as músicas de uma playlist:
+
+```graphql
+query {
+  musicas_playlist(playlist_id: 1)
+}
+```
+
+Exemplo de query GraphQL para listar todas as playlists que contêm uma música:
+
+```graphql
+query {
+  playlists_por_musica(musica_id: 1) {
+    ID
+    nome
+    musicas
+    usuario_id
+  }
+}
+```
+
+Exemplo de mutation GraphQL para criar uma nova playlist:
+
+```graphql
+mutation {
+  create_playlist(ID: 2, nome: "Playlist2", musicas: [1, 2], usuario_id: 1) {
     message
   }
 }
