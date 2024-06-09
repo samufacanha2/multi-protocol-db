@@ -138,6 +138,16 @@ class PlaylistService(ServiceBase):
             for playlist in playlists
         ]
 
+    @rpc(_returns=Iterable(Unicode))
+    def ler_playlists(ctx):
+        playlists = playlist_model.ler_playlists()
+        if len(playlists) == 0:
+            return ["Nenhuma playlist encontrada!"]
+        return [
+            f"ID: {playlist['ID']}, Nome: {playlist['nome']}, Músicas: {playlist['musicas']}, Usuário ID: {playlist['usuario_id']}"
+            for playlist in playlists
+        ]
+
 
 application = Application(
     [UsuarioService, MusicaService, PlaylistService],

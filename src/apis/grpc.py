@@ -93,7 +93,6 @@ class PlaylistService(dtos_pb2_grpc.PlaylistServiceServicer):
             "musicas": list(request.musicas),
         }
         playlist_model.criar_playlist(playlist)
-        usuario_model.adicionar_playlist(request.usuario_id, request.ID)
         return dtos_pb2.Resposta(message="Playlist criada com sucesso!")
 
     def ListarPlaylistsPorUsuario(self, request, context):
@@ -122,6 +121,39 @@ class PlaylistService(dtos_pb2_grpc.PlaylistServiceServicer):
 
     def ListarPlaylistsPorMusica(self, request, context):
         playlists = playlist_model.listar_playlists_por_musica(request.ID)
+        return dtos_pb2.PlaylistList(
+            playlists=[
+                dtos_pb2.Playlist(
+                    ID=playlist["ID"],
+                    usuario_id=playlist["usuario_id"],
+                    musicas=playlist["musicas"],
+                )
+                for playlist in playlists
+            ]
+        )
+
+    def LerPlaylist(self, request, context):
+        playlist = playlist_model.ler_playlist(request.ID)
+        return dtos_pb2.Playlist(
+            ID=playlist["ID"],
+            usuario_id=playlist["usuario_id"],
+            musicas=playlist["musicas"],
+        )
+
+    def AtualizarPlaylist(self, request, context):
+        novos_valores = {
+            "usuario_id": request.usuario_id,
+            "musicas": list(request.musicas),
+        }
+        playlist_model.atualizar_playlist(request.ID, novos_valores)
+        return dtos_pb2.Resposta(message="Playlist atualizada com sucesso!")
+
+    def DeletarPlaylist(self, request, context):
+        playlist_model.deletar_playlist(request.ID)
+        return dtos_pb2.Resposta(message="Playlist deletada com sucesso!")
+
+    def LerPlaylists(self, request, context):
+        playlists = playlist_model.ler_playlists()
         return dtos_pb2.PlaylistList(
             playlists=[
                 dtos_pb2.Playlist(

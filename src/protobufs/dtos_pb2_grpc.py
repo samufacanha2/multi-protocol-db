@@ -600,6 +600,30 @@ class PlaylistServiceStub(object):
             response_deserializer=dtos__pb2.PlaylistList.FromString,
             _registered_method=True,
         )
+        self.LerPlaylist = channel.unary_unary(
+            "/musica_app.PlaylistService/LerPlaylist",
+            request_serializer=dtos__pb2.PlaylistID.SerializeToString,
+            response_deserializer=dtos__pb2.Playlist.FromString,
+            _registered_method=True,
+        )
+        self.LerPlaylists = channel.unary_unary(
+            "/musica_app.PlaylistService/LerPlaylists",
+            request_serializer=dtos__pb2.Empty.SerializeToString,
+            response_deserializer=dtos__pb2.PlaylistList.FromString,
+            _registered_method=True,
+        )
+        self.AtualizarPlaylist = channel.unary_unary(
+            "/musica_app.PlaylistService/AtualizarPlaylist",
+            request_serializer=dtos__pb2.Playlist.SerializeToString,
+            response_deserializer=dtos__pb2.Resposta.FromString,
+            _registered_method=True,
+        )
+        self.DeletarPlaylist = channel.unary_unary(
+            "/musica_app.PlaylistService/DeletarPlaylist",
+            request_serializer=dtos__pb2.PlaylistID.SerializeToString,
+            response_deserializer=dtos__pb2.Resposta.FromString,
+            _registered_method=True,
+        )
 
 
 class PlaylistServiceServicer(object):
@@ -629,6 +653,30 @@ class PlaylistServiceServicer(object):
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
+    def LerPlaylist(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def LerPlaylists(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def AtualizarPlaylist(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
+    def DeletarPlaylist(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details("Method not implemented!")
+        raise NotImplementedError("Method not implemented!")
+
 
 def add_PlaylistServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -651,6 +699,26 @@ def add_PlaylistServiceServicer_to_server(servicer, server):
             servicer.ListarPlaylistsPorMusica,
             request_deserializer=dtos__pb2.MusicaID.FromString,
             response_serializer=dtos__pb2.PlaylistList.SerializeToString,
+        ),
+        "LerPlaylist": grpc.unary_unary_rpc_method_handler(
+            servicer.LerPlaylist,
+            request_deserializer=dtos__pb2.PlaylistID.FromString,
+            response_serializer=dtos__pb2.Playlist.SerializeToString,
+        ),
+        "LerPlaylists": grpc.unary_unary_rpc_method_handler(
+            servicer.LerPlaylists,
+            request_deserializer=dtos__pb2.Empty.FromString,
+            response_serializer=dtos__pb2.PlaylistList.SerializeToString,
+        ),
+        "AtualizarPlaylist": grpc.unary_unary_rpc_method_handler(
+            servicer.AtualizarPlaylist,
+            request_deserializer=dtos__pb2.Playlist.FromString,
+            response_serializer=dtos__pb2.Resposta.SerializeToString,
+        ),
+        "DeletarPlaylist": grpc.unary_unary_rpc_method_handler(
+            servicer.DeletarPlaylist,
+            request_deserializer=dtos__pb2.PlaylistID.FromString,
+            response_serializer=dtos__pb2.Resposta.SerializeToString,
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -775,6 +843,126 @@ class PlaylistService(object):
             "/musica_app.PlaylistService/ListarPlaylistsPorMusica",
             dtos__pb2.MusicaID.SerializeToString,
             dtos__pb2.PlaylistList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def LerPlaylist(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.PlaylistService/LerPlaylist",
+            dtos__pb2.PlaylistID.SerializeToString,
+            dtos__pb2.Playlist.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def LerPlaylists(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.PlaylistService/LerPlaylists",
+            dtos__pb2.Empty.SerializeToString,
+            dtos__pb2.PlaylistList.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def AtualizarPlaylist(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.PlaylistService/AtualizarPlaylist",
+            dtos__pb2.Playlist.SerializeToString,
+            dtos__pb2.Resposta.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True,
+        )
+
+    @staticmethod
+    def DeletarPlaylist(
+        request,
+        target,
+        options=(),
+        channel_credentials=None,
+        call_credentials=None,
+        insecure=False,
+        compression=None,
+        wait_for_ready=None,
+        timeout=None,
+        metadata=None,
+    ):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            "/musica_app.PlaylistService/DeletarPlaylist",
+            dtos__pb2.PlaylistID.SerializeToString,
+            dtos__pb2.Resposta.FromString,
             options,
             channel_credentials,
             insecure,

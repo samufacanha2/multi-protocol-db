@@ -7,6 +7,10 @@ def criar_musica(musica):
     musicas.insert_one(musica)
 
 
+def criar_musicas(new_musicas):
+    musicas.insert_many(new_musicas)
+
+
 def ler_musica(id):
     musica_encontrada = musicas.find_one({"ID": id})
     if musica_encontrada:
@@ -25,3 +29,7 @@ def atualizar_musica(id, novos_valores):
 def deletar_musica(id):
     if ler_musica(id):
         musicas.delete_one({"ID": id})
+
+
+def limpar_tabela():
+    musicas.delete_many({})

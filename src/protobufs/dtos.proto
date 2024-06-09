@@ -23,6 +23,10 @@ service PlaylistService {
     rpc ListarPlaylistsPorUsuario (UsuarioID) returns (PlaylistList);
     rpc ListarMusicasPorPlaylist (PlaylistID) returns (MusicaList);
     rpc ListarPlaylistsPorMusica (MusicaID) returns (PlaylistList);
+    rpc LerPlaylist (PlaylistID) returns (Playlist);
+    rpc LerPlaylists (Empty) returns (PlaylistList);
+    rpc AtualizarPlaylist (Playlist) returns (Resposta);
+    rpc DeletarPlaylist (PlaylistID) returns (Resposta);
 }
 
 message Usuario {
